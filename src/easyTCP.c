@@ -1,6 +1,6 @@
 #include "easyTCP.h"
 
-int initServer(struct serverStruct *server)
+int initServer(struct socketInfo *server)
 {
     int tmp; // temporal values for error handling
 
@@ -27,10 +27,22 @@ int initServer(struct serverStruct *server)
     }
 
     // start listening for new connections
-    tmp = listen(server->socket, server->backlog);
+    tmp = listen(server->socket, server->backlog+(!server->backlog));
     if (tmp < 0)
     {
         perror("[-] initServer() in listen()");
         return -1;
     }
+}
+
+void closeServer(struct socketInfo *server)
+{
+    // close socket
+    close(server->socket);
+    server->socket = 0;
+
+    // delete address info
+    server->address.sin_addr.s_addr = 0;
+    server->address.sin_family = 0;
+    server->address.sin_port = 0;
 }

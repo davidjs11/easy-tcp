@@ -17,23 +17,20 @@ all:\
 $(BIN)/server:\
 	$(OBJ)/server.o\
 	$(LIB)/libeasyTCP.a
-	@echo "Creating server executable..."
+	@echo "creating server executable..."
 	@gcc -o $(BIN)/server\
 			$(OBJ)/server.o\
 			-L$(LIB)\
 			-leasyTCP
-	@echo
 
 $(BIN)/client:\
 	$(OBJ)/client.o\
 	$(LIB)/libeasyTCP.a
-	@echo "Creating client executable..."
+	@echo "creating client executable..."
 	@gcc -o $(BIN)/client\
 			$(OBJ)/client.o\
 			-L$(LIB)\
 			-leasyTCP
-
-	@echo
 
 # object files
 $(OBJ)/server.o:\
@@ -43,7 +40,6 @@ $(OBJ)/server.o:\
 	@gcc -c -o $(OBJ)/server.o\
 			   $(SRC)/server.c\
 			 -I$(INCLUDE)
-	@echo
 
 $(OBJ)/client.o:\
 	$(SRC)/client.c\
@@ -52,7 +48,6 @@ $(OBJ)/client.o:\
 	@gcc -c -o $(OBJ)/client.o\
 			   $(SRC)/client.c\
 			 -I$(INCLUDE)
-	@echo
 
 $(OBJ)/easyTCP.o:\
 	$(SRC)/easyTCP.c\
@@ -61,15 +56,13 @@ $(OBJ)/easyTCP.o:\
 	@gcc -c -o $(OBJ)/easyTCP.o\
 			   $(SRC)/easyTCP.c\
 			 -I$(INCLUDE)
-	@echo
 
+# library
 $(LIB)/libeasyTCP.a:\
 	$(OBJ)/easyTCP.o
 	@echo "creating easyTCP library..."
-	@ar -rvs $(LIB)/libeasyTCP.a\
+	@ar -r $(LIB)/libeasyTCP.a\
 			 $(OBJ)/easyTCP.o
-	@echo
-
 
 # cleaning
 clean:

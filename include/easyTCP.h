@@ -5,8 +5,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <unistd.h>
 
-struct serverStruct 
+struct socketInfo 
 {
     int socket, port;
     struct sockaddr_in address;
@@ -14,6 +15,15 @@ struct serverStruct
 };
 
 // server functions
-int initServer(struct serverStruct *server);
+int initServer(struct socketInfo *server);
+void closeServer(struct socketInfo *server);
+
+// client functions
+int connectToServer(struct socketInfo *server, const char *ip);
+void disconnectFromServer(struct socketInfo *server);
+
+// common functions
+int sendMessage(struct socketInfo *receiver, struct socketInfo *sender);
+int recvMessage(struct socketInfo *receiver, struct socketInfo *sender);
 
 #endif

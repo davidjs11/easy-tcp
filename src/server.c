@@ -3,11 +3,15 @@
 
 int main(void)
 {
-    struct serverStruct server;
+    struct socketInfo server;
     initServer(&server);
-    printf("%d\n", server.socket);
+    printf("listening...\n");
 
-
+    /*
+    while (1)
+    {
+    }
+    */
 
     return 0;
 }
