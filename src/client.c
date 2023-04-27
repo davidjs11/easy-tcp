@@ -2,6 +2,11 @@
 
 int main(void)
 {
-    printf("under construction!\n");
+    struct socketInfo server;
+
+    int tmp = connectToServer(&server, "localhost", 8080);
+
+    if (tmp > 0)
+        printf("it works!!\n");
     return 0;
 }

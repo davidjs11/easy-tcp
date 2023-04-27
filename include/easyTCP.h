@@ -15,11 +15,11 @@ struct socketInfo
 };
 
 // server functions
-int initServer(struct socketInfo *server);
+int initServer(struct socketInfo *server, int port, int backlog);
 void closeServer(struct socketInfo *server);
 
 // client functions
-int connectToServer(struct socketInfo *server, const char *ip);
+int connectToServer(struct socketInfo *server, const char *ip, int port);
 void disconnectFromServer(struct socketInfo *server);
 
 // common functions
