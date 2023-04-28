@@ -11,6 +11,7 @@ all:\
 	$(LIB)/libeasyTCP.a\
 	$(BIN)/server\
 	$(BIN)/client
+	@echo "done!"
 
 
 # executables
@@ -31,6 +32,7 @@ $(BIN)/client:\
 			$(OBJ)/client.o\
 			-L$(LIB)\
 			-leasyTCP
+
 
 # object files
 $(OBJ)/server.o:\
@@ -57,15 +59,15 @@ $(OBJ)/easyTCP.o:\
 			   $(SRC)/easyTCP.c\
 			 -I$(INCLUDE)
 
+
 # library
 $(LIB)/libeasyTCP.a:\
 	$(OBJ)/easyTCP.o
-	@echo "creating easyTCP library..."
 	@ar -r $(LIB)/libeasyTCP.a\
 			 $(OBJ)/easyTCP.o
+
 
 # cleaning
 clean:
 	@echo "cleaning all..."
 	@rm bin/* lib/* obj/*
-	@echo

@@ -57,19 +57,19 @@ int connectToServer(struct socketInfo *server, const char *ip, int port)
 {
     int tmp;
 
-    // get server host by the server ip (only IPv4)
-    struct hostent *host = gethostbyname(ip);
-    if (!host)
-    {
-        perror("[-] connectToServer() in gethostbyname()");
-        return -1;
-    }
-
     // init socket
     server->socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server->socket < 0)
     {
         perror("[-] connectToServer() in socket()");
+        return -1;
+    }
+
+    // get server host by the server ip (only IPv4)
+    struct hostent *host = gethostbyname(ip);
+    if (!host)
+    {
+        perror("[-] connectToServer() in gethostbyname()");
         return -1;
     }
 
@@ -89,4 +89,22 @@ int connectToServer(struct socketInfo *server, const char *ip, int port)
     }
     
     return server->socket;
+}
+
+
+/// common functions /////////////////////////////////////////////////
+int sendMessage(struct socketInfo *to, char *buffer, int bufferSize)
+{
+    // send the message
+    int length = send(to->socket, buffer, bufferSize, 0);
+
+    return length;
+}
+
+int recvMessage(struct socketInfo *from, char *buffer, int bufferSize)
+{
+    // receive the message
+    int length = recv(from->socket, buffer, bufferSize, 0);
+
+    return length;
 }

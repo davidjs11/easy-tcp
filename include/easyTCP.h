@@ -1,17 +1,22 @@
 #ifndef EASY_TCP
 #define EASY_TCP
 
+// standard libraries
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+// socket libraries
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <stdio.h>
-#include <unistd.h>
 
 struct socketInfo 
 {
     int socket, port;
     struct sockaddr_in address;
     int backlog;
+    socklen_t length;
 };
 
 // server functions
@@ -23,7 +28,8 @@ int connectToServer(struct socketInfo *server, const char *ip, int port);
 void disconnectFromServer(struct socketInfo *server);
 
 // common functions
-int sendMessage(struct socketInfo *receiver, struct socketInfo *sender);
-int recvMessage(struct socketInfo *receiver, struct socketInfo *sender);
+int sendMessage(struct socketInfo *to, char *buffer, int bufferSize);
+int recvMessage(struct socketInfo *from, char *buffer, int bufferSize);
+
 
 #endif

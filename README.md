@@ -1,2 +1,2 @@
-# easyTCP
-an easy-to-use TCP server and client library.
+# easy-tcp
+an easy-to-use TCP server/client library.
