@@ -51,6 +51,13 @@ void closeServer(struct socketInfo *server)
     server->address.sin_port = 0;
 }
 
+void acceptClient(struct socketInfo *server, struct socketInfo *client)
+{
+    // block the program until a wild client appears
+    client->socket = accept(server->socket,
+                    (struct sockaddr *) &(client->address),
+                    &(client->length));
+}
 
 /// client functions /////////////////////////////////////////////////
 int connectToServer(struct socketInfo *server, const char *ip, int port)

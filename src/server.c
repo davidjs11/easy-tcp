@@ -17,9 +17,7 @@ int main(void)
     while (1)
     {
         // wait for a client to connect
-        client.socket = accept(server.socket,
-                        (struct sockaddr *) &(client.address),
-                        &(client.length));
+        acceptClient(&server, &client);
 
         // handle a new connection
         printf("new connection!\n");

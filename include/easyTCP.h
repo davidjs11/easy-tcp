@@ -22,6 +22,7 @@ struct socketInfo
 // server functions
 int initServer(struct socketInfo *server, int port, int backlog);
 void closeServer(struct socketInfo *server);
+void acceptClient(struct socketInfo *server, struct socketInfo *client);
 
 // client functions
 int connectToServer(struct socketInfo *server, const char *ip, int port);

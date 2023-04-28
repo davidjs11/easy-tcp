@@ -14,9 +14,7 @@ int main(void)
     
     while(1)
     {
-        client.socket = accept(server.socket,
-                        (struct sockaddr *) &(client.address),
-                        &(client.length));
+        acceptClient(&server, &client);
 
         tmp = recvMessage(&client, buffer, BUFFER_SIZE);
         printf("received -> %d: %s\n", tmp, buffer);
