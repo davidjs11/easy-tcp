@@ -1,5 +1,6 @@
 #include "easyTCP.h"
 #define BUFFER_SIZE 256
+#define PORT 8080
 
 int main(void)
 {
@@ -8,7 +9,7 @@ int main(void)
     struct socketInfo client;
     char buffer[BUFFER_SIZE];
 
-    tmp = initServer(&server, 8080, 5);
+    tmp = initServer(&server, PORT, 5);
     if (tmp < 0)
         return -1;
     

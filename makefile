@@ -1,4 +1,4 @@
-# macros
+### macros ###########################################################
 HOME    = .
 
 SRC      = $(HOME)/src
@@ -8,20 +8,21 @@ OBJ      = $(HOME)/obj
 LIB      = $(HOME)/lib
 BIN      = $(HOME)/bin
 
-
 all:\
-	$(LIB)/libeasyTCP.a\
+	lib\
 	examples
 	@echo "done!"
 
 examples:\
-	echo
-
-echo:\
 	$(BIN)/echo-client\
 	$(BIN)/echo-server
+	@echo
 
-# executables
+lib:\
+	$(LIB)/libeasyTCP.a
+
+
+### executables ######################################################
 $(BIN)/echo-server:\
 	$(OBJ)/echo-server.o\
 	$(LIB)/libeasyTCP.a
@@ -41,7 +42,7 @@ $(BIN)/echo-client:\
 			-leasyTCP
 
 
-# object files
+### object files #####################################################
 $(OBJ)/echo-server.o:\
 	$(EXAMPLES)/echo-server.c\
 	$(INCLUDE)/easyTCP.h
@@ -67,14 +68,14 @@ $(OBJ)/easyTCP.o:\
 			 -I$(INCLUDE)
 
 
-# library
+### library ##########################################################
 $(LIB)/libeasyTCP.a:\
 	$(OBJ)/easyTCP.o
 	@ar -r $(LIB)/libeasyTCP.a\
 			 $(OBJ)/easyTCP.o
 
 
-# cleaning
+### cleaning #########################################################
 clean:
 	@echo "cleaning all..."
-	@rm bin/* lib/* obj/*
+	-rm bin/* lib/* obj/*

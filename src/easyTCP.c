@@ -1,5 +1,5 @@
 #include "easyTCP.h"
-#include <string.h>
+
 
 /// server functions /////////////////////////////////////////////////
 int initServer(struct socketInfo *server, int port, int backlog)
@@ -58,6 +58,7 @@ void acceptClient(struct socketInfo *server, struct socketInfo *client)
                     (struct sockaddr *) &(client->address),
                     &(client->length));
 }
+
 
 /// client functions /////////////////////////////////////////////////
 int connectToServer(struct socketInfo *server, const char *ip, int port)

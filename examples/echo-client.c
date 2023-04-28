@@ -29,7 +29,7 @@ int main(void)
         // receive from the server
         tmp = recvMessage(&server, buffer, BUFFER_SIZE);
         assert(tmp);
-        printf("message received: %s\n", buffer);
+        printf("message received: %s\n\n", buffer);
 
         // get next message from input
         printf("message:\t");
