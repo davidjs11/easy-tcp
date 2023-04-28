@@ -8,9 +8,10 @@ OBJ      = $(HOME)/obj
 LIB      = $(HOME)/lib
 BIN      = $(HOME)/bin
 
+
 all:\
 	$(LIB)/libeasyTCP.a\
-	echo
+	examples
 	@echo "done!"
 
 examples:\
@@ -21,28 +22,10 @@ echo:\
 	$(BIN)/echo-server
 
 # executables
-$(BIN)/server:\
-	$(OBJ)/server.o\
-	$(LIB)/libeasyTCP.a
-	@echo "creating server executable..."
-	@gcc -o $(BIN)/server\
-			$(OBJ)/server.o\
-			-L$(LIB)\
-			-leasyTCP
-
-$(BIN)/client:\
-	$(OBJ)/client.o\
-	$(LIB)/libeasyTCP.a
-	@echo "creating client executable..."
-	@gcc -o $(BIN)/client\
-			$(OBJ)/client.o\
-			-L$(LIB)\
-			-leasyTCP
-
 $(BIN)/echo-server:\
 	$(OBJ)/echo-server.o\
 	$(LIB)/libeasyTCP.a
-	@echo "creating echo-server (example) executable..."
+	@echo "creating echo-server executable..."
 	@gcc -o $(BIN)/echo-server\
 			$(OBJ)/echo-server.o\
 			-L$(LIB)\
@@ -51,25 +34,18 @@ $(BIN)/echo-server:\
 $(BIN)/echo-client:\
 	$(OBJ)/echo-client.o\
 	$(LIB)/libeasyTCP.a
-	@echo "creating echo-client (example) executable..."
+	@echo "creating echo-client executable..."
 	@gcc -o $(BIN)/echo-client\
 			$(OBJ)/echo-client.o\
 			-L$(LIB)\
 			-leasyTCP
 
-# object files
-$(OBJ)/server.o:\
-	$(SRC)/server.c\
-	$(INCLUDE)/easyTCP.h
-	@echo "compiling server program..."
-	@gcc -c -o $(OBJ)/server.o\
-			   $(SRC)/server.c\
-			 -I$(INCLUDE)
 
+# object files
 $(OBJ)/echo-server.o:\
 	$(EXAMPLES)/echo-server.c\
 	$(INCLUDE)/easyTCP.h
-	@echo "compiling echo-server (example) program..."
+	@echo "compiling echo-server program..."
 	@gcc -c -o $(OBJ)/echo-server.o\
 			   $(EXAMPLES)/echo-server.c\
 			 -I$(INCLUDE)
@@ -77,17 +53,9 @@ $(OBJ)/echo-server.o:\
 $(OBJ)/echo-client.o:\
 	$(EXAMPLES)/echo-client.c\
 	$(INCLUDE)/easyTCP.h
-	@echo "compiling echo-client (example) program..."
+	@echo "compiling echo-client program..."
 	@gcc -c -o $(OBJ)/echo-client.o\
 			   $(EXAMPLES)/echo-client.c\
-			 -I$(INCLUDE)
-
-$(OBJ)/client.o:\
-	$(SRC)/client.c\
-	$(INCLUDE)/easyTCP.h
-	@echo "compiling client program..."
-	@gcc -c -o $(OBJ)/client.o\
-			   $(SRC)/client.c\
 			 -I$(INCLUDE)
 
 $(OBJ)/easyTCP.o:\
