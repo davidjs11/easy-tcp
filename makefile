@@ -15,7 +15,8 @@ all:\
 
 examples:\
 	$(BIN)/echo-client\
-	$(BIN)/echo-server
+	$(BIN)/echo-server\
+	$(BIN)/http
 	@echo
 
 lib:\
@@ -41,6 +42,15 @@ $(BIN)/echo-client:\
 			-L$(LIB)\
 			-leasyTCP
 
+$(BIN)/http:\
+	$(OBJ)/http.o\
+	$(LIB)/libeasyTCP.a
+	@echo "creating http server executable..."
+	@gcc -o $(BIN)/http\
+			$(OBJ)/http.o\
+			-L$(LIB)\
+			-leasyTCP
+
 
 ### object files #####################################################
 $(OBJ)/echo-server.o:\
@@ -57,6 +67,14 @@ $(OBJ)/echo-client.o:\
 	@echo "compiling echo-client program..."
 	@gcc -c -o $(OBJ)/echo-client.o\
 			   $(EXAMPLES)/echo-client.c\
+			 -I$(INCLUDE)
+
+$(OBJ)/http.o:\
+	$(EXAMPLES)/http.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling http server program..."
+	@gcc -c -o $(OBJ)/http.o\
+			   $(EXAMPLES)/http.c\
 			 -I$(INCLUDE)
 
 $(OBJ)/easyTCP.o:\

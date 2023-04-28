@@ -1,5 +1,5 @@
 #include "easyTCP.h"
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 2048
 #define PORT 8080
 
 int main(void)
