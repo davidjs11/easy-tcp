@@ -1,18 +1,24 @@
 # macros
-HOME	= .
+HOME    = .
 
-SRC		= $(HOME)/src
-INCLUDE	= $(HOME)/include
-OBJ		= $(HOME)/obj
-LIB		= $(HOME)/lib
-BIN		= $(HOME)/bin
+SRC      = $(HOME)/src
+EXAMPLES = $(HOME)/examples
+INCLUDE  = $(HOME)/include
+OBJ      = $(HOME)/obj
+LIB      = $(HOME)/lib
+BIN      = $(HOME)/bin
 
 all:\
 	$(LIB)/libeasyTCP.a\
-	$(BIN)/server\
-	$(BIN)/client
+	echo
 	@echo "done!"
 
+examples:\
+	echo
+
+echo:\
+	$(BIN)/echo-client\
+	$(BIN)/echo-server
 
 # executables
 $(BIN)/server:\
@@ -33,6 +39,23 @@ $(BIN)/client:\
 			-L$(LIB)\
 			-leasyTCP
 
+$(BIN)/echo-server:\
+	$(OBJ)/echo-server.o\
+	$(LIB)/libeasyTCP.a
+	@echo "creating echo-server (example) executable..."
+	@gcc -o $(BIN)/echo-server\
+			$(OBJ)/echo-server.o\
+			-L$(LIB)\
+			-leasyTCP
+
+$(BIN)/echo-client:\
+	$(OBJ)/echo-client.o\
+	$(LIB)/libeasyTCP.a
+	@echo "creating echo-client (example) executable..."
+	@gcc -o $(BIN)/echo-client\
+			$(OBJ)/echo-client.o\
+			-L$(LIB)\
+			-leasyTCP
 
 # object files
 $(OBJ)/server.o:\
@@ -41,6 +64,22 @@ $(OBJ)/server.o:\
 	@echo "compiling server program..."
 	@gcc -c -o $(OBJ)/server.o\
 			   $(SRC)/server.c\
+			 -I$(INCLUDE)
+
+$(OBJ)/echo-server.o:\
+	$(EXAMPLES)/echo-server.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling echo-server (example) program..."
+	@gcc -c -o $(OBJ)/echo-server.o\
+			   $(EXAMPLES)/echo-server.c\
+			 -I$(INCLUDE)
+
+$(OBJ)/echo-client.o:\
+	$(EXAMPLES)/echo-client.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling echo-client (example) program..."
+	@gcc -c -o $(OBJ)/echo-client.o\
+			   $(EXAMPLES)/echo-client.c\
 			 -I$(INCLUDE)
 
 $(OBJ)/client.o:\
