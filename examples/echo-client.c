@@ -1,7 +1,7 @@
 #include "easyTCP.h"
 #include <assert.h>
 #define BUFFER_SIZE 256
-#define PORT 8080
+#define PORT 8081
 
 void getInput(char *buffer);
 
@@ -12,7 +12,7 @@ int main(void)
     char buffer[BUFFER_SIZE];
 
     // first message input
-    printf("message:\t");
+    printf("message: ");
     getInput(buffer);
 
     while(strcmp(buffer, "0"))
@@ -24,15 +24,15 @@ int main(void)
         // send message to the server
         tmp = sendMessage(&server, buffer, BUFFER_SIZE);
         assert(tmp);
-        printf("message sent to server.\n");
+        printf("sent!\n");
 
         // receive from the server
         tmp = recvMessage(&server, buffer, BUFFER_SIZE);
         assert(tmp);
-        printf("message received: %s\n\n", buffer);
+        printf("reveived: %s\n\n", buffer);
 
         // get next message from input
-        printf("message:\t");
+        printf("message: ");
         getInput(buffer);
     }
 

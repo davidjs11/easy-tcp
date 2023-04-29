@@ -1,4 +1,6 @@
-//strcpy(buffer, "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!");
+///////////////////////////////
+///  UNDER CONSTRUCTION     ///
+///////////////////////////////
 
 #include "easyTCP.h"
 #include <assert.h>
@@ -11,14 +13,23 @@ int main(void)
     int tmp;
     struct socketInfo server;
     struct socketInfo client;
-    char buffer[BUFFER_SIZE];
+
+    char request[BUFFER_SIZE];
+    char filename[BUFFER_SIZE];
+
+    char *header200 = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length ";
+    char response[BUFFER_SIZE];
 
     tmp = initServer(&server, PORT, 5);
 
-    strcpy(buffer, "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 14\n\ndimelo mansana");
+    strcpy(response, "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 14\n\ndimelo mansana");
     while(1)
     {
         acceptClient(&server, &client);
-        sendMessage(&client, buffer, BUFFER_SIZE);
+        recvMessage(&client, request, BUFFER_SIZE);
+
+        printf("%s\n", request);
+        
+        sendMessage(&client, response, BUFFER_SIZE);
     }
 }

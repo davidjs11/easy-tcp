@@ -37,6 +37,8 @@ int initServer(struct socketInfo *server, int port, int backlog)
         perror("[-] initServer() in listen()");
         return -1;
     }
+
+    return 0;
 }
 
 void closeServer(struct socketInfo *server)
@@ -73,29 +75,26 @@ int connectToServer(struct socketInfo *server, const char *ip, int port)
         return -1;
     }
 
-    // get server host by the server ip (only IPv4)
-    struct hostent *host = gethostbyname(ip);
-    if (!host)
-    {
-        perror("[-] connectToServer() in gethostbyname()");
-        return -1;
-    }
-
     // prepare server address for connection
     server->address.sin_family = AF_INET;
     server->address.sin_port = htons(port);
-    memcpy(host->h_addr, &(server->address.sin_addr.s_addr),
-           host->h_length); 
+
+    // resolve host name
+    tmp = inet_pton(AF_INET, ip, &(server->address.sin_addr));
+    if (tmp < 0)
+    {
+        perror("[-] connectToServer() in inet_pton()");
+        return -1;
+    }
 
     // connect to the server
-    tmp = connect(server->socket, (struct sockaddr *) &(server->address),
-                 sizeof(server->address));
+    tmp = connect(server->socket, (struct sockaddr *)&server->address, sizeof(server->address));
     if (tmp < 0)
     {
         perror("[-] connectToServer() in connect()");
         return -1;
     }
-    
+
     return server->socket;
 }
 
