@@ -8,7 +8,10 @@ OBJ      = $(HOME)/obj
 LIB      = $(HOME)/lib
 BIN      = $(HOME)/bin
 
+
+### general rules ####################################################
 all:\
+	folders\
 	lib\
 	examples
 	@echo "done!"
@@ -22,6 +25,21 @@ examples:\
 lib:\
 	$(LIB)/libeasyTCP.a
 
+
+### creating folders #################################################
+folders:\
+	$(BIN)/\
+	$(LIB)/\
+	$(OBJ)/\
+
+$(BIN)/:
+	@mkdir bin
+
+$(LIB)/:
+	@mkdir lib
+
+$(OBJ)/:
+	@mkdir obj
 
 ### executables ######################################################
 $(BIN)/echo-server:\
@@ -97,3 +115,4 @@ $(LIB)/libeasyTCP.a:\
 clean:
 	@echo "cleaning all..."
 	-rm bin/* lib/* obj/*
+	-rmdir bin lib obj
