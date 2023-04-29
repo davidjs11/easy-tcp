@@ -12,6 +12,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
+// socket information structure
 struct socketInfo 
 {
     int socket, port;
