@@ -21,6 +21,10 @@ struct socketInfo
     socklen_t length;
 };
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 // server functions
 int initServer(struct socketInfo *server, int port, int backlog);
 void closeServer(struct socketInfo *server);
@@ -34,5 +38,8 @@ void disconnectFromServer(struct socketInfo *server);
 int sendMessage(struct socketInfo *to, char *buffer, int bufferSize);
 int recvMessage(struct socketInfo *from, char *buffer, int bufferSize);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
