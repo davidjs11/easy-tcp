@@ -5,12 +5,12 @@
 /////////////////////////////////////////
 
 #include "easyTCP.h"
-#include <assert.h>
-#include <fcntl.h>
-#include <sys/stat.h>
+#include <fcntl.h>      // for opening files
+#include <sys/stat.h>   // for calculating file-size
+#include <signal.h>     // for signal handling
 
 #define BUFFER_SIZE 1024
-#define PORT 8081
+#define PORT 8080
 
 // http request information (for GET method)
 struct httpRequest
@@ -70,6 +70,14 @@ void sendFile(struct socketInfo *client,
         sendMessage(client, buffer, BUFFER_SIZE);
 }
 
+
+volatile sig_atomic_t terminationFlag = 0;
+void signalHandler(int sig)
+{
+    if (sig == SIGINT)
+        terminationFlag = 1;
+}
+
 int main(void)
 {
     int tmp;
@@ -85,7 +93,11 @@ int main(void)
         return -1;
     setNonBlock(&server);
 
-    while(1)
+    // cath termination signals
+    signal(SIGINT, signalHandler);
+
+    int running = 1;
+    while(running)
     {
         // accept connection and receive the request
         acceptClient(&server, &client);
@@ -93,6 +105,7 @@ int main(void)
         // handle client
         if (client.socket != -1)
         {
+            // receive the request
             recvMessage(&client, buffer, BUFFER_SIZE);
             printf("new request! ");
 
@@ -103,5 +116,15 @@ int main(void)
             sendFile(&client, &request);
             printf("\n");
         }
+
+        // close server
+        if (terminationFlag == 1)
+        {
+            printf("\nclosing server...\n");
+            running = 0;
+        }
     }
+
+    closeServer(&server);
+    return 0;
 }
