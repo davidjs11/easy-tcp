@@ -83,19 +83,25 @@ int main(void)
     tmp = initServer(&server, PORT, 1);
     if (tmp < 0)
         return -1;
+    setNonBlock(&server);
 
     while(1)
     {
         // accept connection and receive the request
         acceptClient(&server, &client);
-        recvMessage(&client, buffer, BUFFER_SIZE);
-        printf("new request! ");
 
-        // get data from the request
-        processRequest(buffer, &request);
+        // handle client
+        if (client.socket != -1)
+        {
+            recvMessage(&client, buffer, BUFFER_SIZE);
+            printf("new request! ");
 
-        // send the file as response
-        sendFile(&client, &request);
-        printf("\n");
+            // get data from the request
+            processRequest(buffer, &request);
+
+            // send the file as response
+            sendFile(&client, &request);
+            printf("\n");
+        }
     }
 }

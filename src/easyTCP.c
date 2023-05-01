@@ -45,12 +45,9 @@ void closeServer(struct socketInfo *server)
 {
     // close socket
     close(server->socket);
-    server->socket = 0;
 
-    // delete address info
-    server->address.sin_addr.s_addr = 0;
-    server->address.sin_family = 0;
-    server->address.sin_port = 0;
+    // set info to 0
+    memset(server, 0, sizeof(*server));
 }
 
 void acceptClient(struct socketInfo *server, struct socketInfo *client)
@@ -59,6 +56,12 @@ void acceptClient(struct socketInfo *server, struct socketInfo *client)
     client->socket = accept(server->socket,
                     (struct sockaddr *) &(client->address),
                     &(client->length));
+}
+
+void setNonBlock(struct socketInfo *server)
+{
+    int flags = fcntl(server->socket, F_GETFL);
+    fcntl(server->socket, F_SETFL, flags | O_NONBLOCK);
 }
 
 
@@ -88,7 +91,8 @@ int connectToServer(struct socketInfo *server, const char *ip, int port)
     }
 
     // connect to the server
-    tmp = connect(server->socket, (struct sockaddr *)&server->address, sizeof(server->address));
+    tmp = connect(server->socket, (struct sockaddr *)&server->address,
+                  sizeof(server->address));
     if (tmp < 0)
     {
         perror("[-] connectToServer() in connect()");
@@ -96,6 +100,15 @@ int connectToServer(struct socketInfo *server, const char *ip, int port)
     }
 
     return server->socket;
+}
+
+void disconnectFromServer(struct socketInfo *server)
+{
+    // close socket
+    close(server->socket);
+
+    // set information to 0
+    memset(server, 0, sizeof(*server));
 }
 
 
