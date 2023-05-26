@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #define BUFFER_SIZE 256
-#define PORT 8081
+#define PORT 8080
 
 void getInput(char *buffer);
 
