@@ -19,6 +19,8 @@ all:\
 examples:\
 	$(BIN)/echo-client\
 	$(BIN)/echo-server\
+	$(BIN)/chat-server\
+	$(BIN)/chat-client\
 	$(BIN)/http
 	@echo
 
@@ -60,6 +62,24 @@ $(BIN)/echo-client:\
 			-L$(LIB)\
 			-leasyTCP
 
+$(BIN)/chat-server:\
+	$(OBJ)/chat-server.o\
+	$(LIB)/libeasyTCP.a
+	@echo "creating chat-server executable..."
+	@gcc -o $(BIN)/chat-server\
+			$(OBJ)/chat-server.o\
+			-L$(LIB)\
+			-leasyTCP
+
+$(BIN)/chat-client:\
+	$(OBJ)/chat-client.o\
+	$(LIB)/libeasyTCP.a
+	@echo "creating chat-client executable..."
+	@gcc -o $(BIN)/chat-client\
+			$(OBJ)/chat-client.o\
+			-L$(LIB)\
+			-leasyTCP
+
 $(BIN)/http:\
 	$(OBJ)/http.o\
 	$(LIB)/libeasyTCP.a
@@ -71,6 +91,14 @@ $(BIN)/http:\
 
 
 ### object files #####################################################
+$(OBJ)/easyTCP.o:\
+	$(SRC)/easyTCP.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling easyTCP..."
+	@gcc -c -o $(OBJ)/easyTCP.o\
+			   $(SRC)/easyTCP.c\
+			 -I$(INCLUDE)
+
 $(OBJ)/echo-server.o:\
 	$(EXAMPLES)/echo-server.c\
 	$(INCLUDE)/easyTCP.h
@@ -87,20 +115,28 @@ $(OBJ)/echo-client.o:\
 			   $(EXAMPLES)/echo-client.c\
 			 -I$(INCLUDE)
 
+$(OBJ)/chat-server.o:\
+	$(EXAMPLES)/chat-server.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling chat-server program..."
+	@gcc -c -o $(OBJ)/chat-server.o\
+			   $(EXAMPLES)/chat-server.c\
+			 -I$(INCLUDE)
+
+$(OBJ)/chat-client.o:\
+	$(EXAMPLES)/chat-client.c\
+	$(INCLUDE)/easyTCP.h
+	@echo "compiling chat-client program..."
+	@gcc -c -o $(OBJ)/chat-client.o\
+			   $(EXAMPLES)/chat-client.c\
+			 -I$(INCLUDE)
+
 $(OBJ)/http.o:\
 	$(EXAMPLES)/http.c\
 	$(INCLUDE)/easyTCP.h
 	@echo "compiling http server program..."
 	@gcc -c -o $(OBJ)/http.o\
 			   $(EXAMPLES)/http.c\
-			 -I$(INCLUDE)
-
-$(OBJ)/easyTCP.o:\
-	$(SRC)/easyTCP.c\
-	$(INCLUDE)/easyTCP.h
-	@echo "compiling easyTCP..."
-	@gcc -c -o $(OBJ)/easyTCP.o\
-			   $(SRC)/easyTCP.c\
 			 -I$(INCLUDE)
 
 
