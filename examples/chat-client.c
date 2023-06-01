@@ -2,20 +2,36 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include <string.h>
+#include "easyTCP.h"
 
 #define BUFFER_SIZE 256
 #define MAX_MSG 30
+#define PORT 8080
 
 int main() {
-    char buffer[BUFFER_SIZE];
-
+    // input buffer
     char readBuffer[BUFFER_SIZE] = {0};
     int readChars = 0;
+    char ch; // temporal character
 
+    // receive buffer
+    char recvBuffer[BUFFER_SIZE] = {0};
+    int newMessage = 0;
+
+    // message buffer
     char msgBuffer[MAX_MSG][BUFFER_SIZE] = {0};
     int updateScreen = 1;
 
-    char ch; // temporal character
+    int tmp;
+    struct socketInfo server;
+    
+    if(connectToServer(&server, "192.168.1.144", PORT) < 0)
+        return -1;
+
+    setNonBlock(&server);
+
+    //sendMessage(&server, buffer, BUFFER_SIZE);
+
 
     initscr();
     cbreak();
@@ -29,21 +45,27 @@ int main() {
     while (1)
     {
 
+        if (newMessage)
+        {
+            // put input into message buffer
+            memmove(msgBuffer+(MAX_MSG-1), recvBuffer, BUFFER_SIZE);
+
+            // delete last message
+            memmove(msgBuffer, msgBuffer+1, BUFFER_SIZE*(MAX_MSG));
+
+            updateScreen = 1;
+        }
+
         if ((ch = getch()) > 0)
         {
             if (ch == '\n')
             {
                 // send buffer
-
-                // put input into message buffer
-                memmove(msgBuffer+(MAX_MSG-1), readBuffer, BUFFER_SIZE);
+                sendMessage(&server, readBuffer, BUFFER_SIZE);
 
                 // reset read buffer
                 memset(readBuffer, 0, BUFFER_SIZE);
                 readChars = 0;
-
-                // delete last message
-                memmove(msgBuffer, msgBuffer+1, BUFFER_SIZE*(MAX_MSG));
             }
             else if (ch == 127)
             {
@@ -69,6 +91,7 @@ int main() {
         {
             refresh();
             clear();
+            mvprintw(0, x-5, "%d", newMessage);  // Imprimir el prompt para la entrada del usuario
             mvprintw(y - 1, 0, "> ");  // Imprimir el prompt para la entrada del usuario
             updateScreen = 0;
         }
@@ -76,8 +99,8 @@ int main() {
         move(y - 1, 2+readChars);
         refresh();
 
-        //usleep(30000);
-        
+        recvMessage(&server, recvBuffer, BUFFER_SIZE);
+        newMessage = (recvBuffer[0]);
     }
 
     endwin();

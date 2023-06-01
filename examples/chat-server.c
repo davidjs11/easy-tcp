@@ -5,7 +5,7 @@
 #include <signal.h>
 
 #define BUFFER_SIZE 1024
-#define PORT 8090
+#define PORT 8080
 #define MAX_USERS 5
 
 int main(void)
@@ -46,49 +46,12 @@ int main(void)
         {
             if (FD_ISSET(client[i].socket, &readableClients))
             {
-                printf("lectura!!! %d\n",
-                    recvMessage(&client[i], buffer, BUFFER_SIZE));
+                recvMessage(&client[i], buffer, BUFFER_SIZE);
+                printf("message: %s\n", buffer);
                 for(int j=0; j<connected; j++)
                     sendMessage(&client[j], buffer, BUFFER_SIZE);
             }
         }
-
-        /*
-        if (connected < MAX_USERS)
-            acceptClient(&server, &client[connected]);
-
-        if (client[connected].socket > 0)
-            connected++;
-            */
-
-        /*
-        for (int i=0; i<MAX_USERS; i++)
-            printf("%d - ", client[i].socket);
-        printf("\t%d\n", connected);
-
-        for (int i=0; i<MAX_USERS; i++)
-            printf("%d - ", recvMessage(&client[i], buffer, BUFFER_SIZE));
-        printf("\n\n");
-        */
-
-        //printf("%d - %d\n", client[0].socket, recvMessage(&client[0], buffer, BUFFER_SIZE));
-
-
-        /*
-        // temporal message printing
-        for(int i=0; i<connected; i++)
-        {
-            recvMessage(&client[i], buffer, BUFFER_SIZE);
-
-            if (buffer[0] != 0)
-                printf("[%d] buffer: %s\n", i, buffer);
-                
-            buffer[0] = 0; // bruhh
-        }
-        */
-
-
-
     }
 
 
