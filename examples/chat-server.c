@@ -5,7 +5,7 @@
 #include <signal.h>
 
 #define BUFFER_SIZE 1024
-#define PORT 8080
+#define PORT 8090
 #define MAX_USERS 5
 
 int main(void)
@@ -45,8 +45,12 @@ int main(void)
         for(int i=0; i<connected; i++)
         {
             if (FD_ISSET(client[i].socket, &readableClients))
+            {
                 printf("lectura!!! %d\n",
-                       recvMessage(&client[i], buffer, BUFFER_SIZE));
+                    recvMessage(&client[i], buffer, BUFFER_SIZE));
+                for(int j=0; j<connected; j++)
+                    sendMessage(&client[j], buffer, BUFFER_SIZE);
+            }
         }
 
         /*

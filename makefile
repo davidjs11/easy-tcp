@@ -78,7 +78,7 @@ $(BIN)/chat-client:\
 	@gcc -o $(BIN)/chat-client\
 			$(OBJ)/chat-client.o\
 			-L$(LIB)\
-			-leasyTCP
+			-leasyTCP -lncurses
 
 $(BIN)/http:\
 	$(OBJ)/http.o\
@@ -129,7 +129,7 @@ $(OBJ)/chat-client.o:\
 	@echo "compiling chat-client program..."
 	@gcc -c -o $(OBJ)/chat-client.o\
 			   $(EXAMPLES)/chat-client.c\
-			 -I$(INCLUDE)
+			 -I$(INCLUDE) -lncurses
 
 $(OBJ)/http.o:\
 	$(EXAMPLES)/http.c\
