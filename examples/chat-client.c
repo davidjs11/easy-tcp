@@ -47,11 +47,12 @@ int main() {
 
         if (newMessage)
         {
-            // put input into message buffer
-            memmove(msgBuffer+(MAX_MSG-1), recvBuffer, BUFFER_SIZE);
 
             // delete last message
-            memmove(msgBuffer, msgBuffer+1, BUFFER_SIZE*(MAX_MSG));
+            memmove(msgBuffer, msgBuffer+1, BUFFER_SIZE*(MAX_MSG-1));
+
+            // put input into message buffer
+            memmove(msgBuffer+(MAX_MSG-1), recvBuffer, BUFFER_SIZE);
 
             updateScreen = 1;
         }
